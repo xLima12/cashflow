@@ -1,4 +1,4 @@
-﻿namespace CashFlow.Domain.Repositories.Expenses;
+﻿namespace CashFlow.Domain.Repositories;
 public interface IUnitOfWork
 {
     Task Commit();
