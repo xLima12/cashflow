@@ -1,0 +1,11 @@
+services:
+  db:
+    image: mysql:latest
+    container_name: mysql-container-cashflow
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: cashflowdb
+      MYSQL_USER: cashflowuser
+      MYSQL_PASSWORD: cashflowpass
+    ports:
+      - "3306:3306"
