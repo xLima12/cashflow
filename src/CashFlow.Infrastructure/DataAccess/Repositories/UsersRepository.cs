@@ -37,6 +37,11 @@ internal class UsersRepository : IUserReadOnlyRepository, IUserUpdateOnlyReposit
         throw new NotImplementedException();
     }
 
+    public async Task<User?> GetUserByEmail(string email)
+    {
+        return await _dbContext.Users.AsNoTracking().FirstOrDefaultAsync(user => user.Email.Equals(email));
+    }
+
     public void Update(User user)
     {
         throw new NotImplementedException();

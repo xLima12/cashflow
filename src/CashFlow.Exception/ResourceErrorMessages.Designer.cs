@@ -158,5 +158,14 @@ namespace CashFlow.Exception {
                 return ResourceManager.GetString("UNKNOW_ERROR", resourceCulture);
             }
         }
+
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Unknow error..
+        /// </summary>
+        public static string EMAIL_OR_PASSWORD_INVALID {
+            get {
+                return ResourceManager.GetString("EMAIL_OR_PASSWORD_INVALID", resourceCulture);
+            }
+        }
     }
 }
