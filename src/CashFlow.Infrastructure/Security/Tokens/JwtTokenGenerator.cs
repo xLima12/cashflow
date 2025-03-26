@@ -1,29 +1,28 @@
+﻿using CashFlow.Domain.Entities;
+using CashFlow.Domain.Security.Tokens;
+using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using CashFlow.Domain.Entities;
-using CashFlow.Domain.Security.Tokens;
-using Microsoft.IdentityModel.Tokens;
 
 namespace CashFlow.Infrastructure.Security.Tokens;
-
 internal class JwtTokenGenerator : IAccessTokenGenerator
 {
     private readonly uint _expirationTimeMinutes;
-    private readonly string _signinKey;
+    private readonly string _signingKey;
 
-    public JwtTokenGenerator(uint expirationTimeMinutes, string signinKey)
+    public JwtTokenGenerator(uint expirationTimeMinutes, string signingKey)
     {
         _expirationTimeMinutes = expirationTimeMinutes;
-        _signinKey = signinKey;
+        _signingKey = signingKey;
     }
 
     public string Generate(User user)
     {
         var claims = new List<Claim>()
         {
-            new (ClaimTypes.Name, user.Name),
-            new (ClaimTypes.Sid, user.UserIdentifier.ToString())
+            new Claim(ClaimTypes.Name, user.Name),
+            new Claim(ClaimTypes.Sid, user.UserIdentifier.ToString())
         };
 
         var tokenDescriptor = new SecurityTokenDescriptor
@@ -34,15 +33,16 @@ internal class JwtTokenGenerator : IAccessTokenGenerator
         };
 
         var tokenHandler = new JwtSecurityTokenHandler();
-
+        
         var securityToken = tokenHandler.CreateToken(tokenDescriptor);
 
         return tokenHandler.WriteToken(securityToken);
     }
 
-    public SymmetricSecurityKey SecurityKey()
+    private SymmetricSecurityKey SecurityKey()
     {
-        var key = Encoding.UTF8.GetBytes(_signinKey);
+        var key = Encoding.UTF8.GetBytes(_signingKey);
+
         return new SymmetricSecurityKey(key);
     }
 }

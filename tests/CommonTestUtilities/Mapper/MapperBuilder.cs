@@ -1,13 +1,13 @@
-using AutoMapper;
+﻿using AutoMapper;
 using CashFlow.Application.AutoMapper;
 
-namespace CommonTestUtilities.Requests;
-
+namespace CommonTestUtilities.Mapper;
 public class MapperBuilder
 {
     public static IMapper Build()
     {
-        var mapper = new MapperConfiguration(config => {
+        var mapper = new MapperConfiguration(config =>
+        {
             config.AddProfile(new AutoMapping());
         });
 

@@ -1,7 +1,7 @@
-using Microsoft.AspNetCore.Mvc;
+﻿using CashFlow.Application.UseCases.Login.DoLogin;
 using CashFlow.Communication.Requests;
 using CashFlow.Communication.Responses;
-using CashFlow.Application.UseCases.Login.DoLogin;
+using Microsoft.AspNetCore.Mvc;
 
 namespace CashFlow.Api.Controllers;
 
@@ -10,12 +10,11 @@ namespace CashFlow.Api.Controllers;
 public class LoginController : ControllerBase
 {
     [HttpPost]
-    [ProducesResponseType(typeof(ResponseRegisterUserJson), StatusCodes.Status200OK)]
-    [ProducesResponseType(typeof(ResponseErrorsJson), StatusCodes.Status401Unauthorized)]
+    [ProducesResponseType(typeof(ResponseRegisteredUserJson), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ResponseErrorJson), StatusCodes.Status401Unauthorized)]
     public async Task<IActionResult> Login(
         [FromServices] IDoLoginUseCase useCase,
-        [FromBody] RequestLoginJson request
-    )
+        [FromBody] RequestLoginJson request)
     {
         var response = await useCase.Execute(request);
 

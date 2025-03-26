@@ -1,12 +1,12 @@
 ﻿using AutoMapper;
 using CashFlow.Communication.Requests;
+using CashFlow.Domain.Entities;
 using CashFlow.Domain.Repositories;
 using CashFlow.Domain.Repositories.Expenses;
 using CashFlow.Exception;
-using CashFlow.Exception.ExceptionBase;
+using CashFlow.Exception.ExceptionsBase;
 
 namespace CashFlow.Application.UseCases.Expenses.Update;
-
 public class UpdateExpenseUseCase : IUpdateExpenseUseCase
 {
     private readonly IMapper _mapper;
@@ -28,7 +28,7 @@ public class UpdateExpenseUseCase : IUpdateExpenseUseCase
 
         if (expense is null)
         {
-            throw new NotFoundException(ResourceErrorMessages.EXPENSES_NOT_FOUND);
+            throw new NotFoundException(ResourceErrorMessages.EXPENSE_NOT_FOUND);
         }
 
         _mapper.Map(request, expense);
@@ -44,9 +44,9 @@ public class UpdateExpenseUseCase : IUpdateExpenseUseCase
 
         var result = validator.Validate(request);
 
-        if (!result.IsValid)
+        if (result.IsValid == false)
         {
-            var errorMessages = result.Errors.Select(error => error.ErrorMessage).ToList();
+            var errorMessages = result.Errors.Select(f => f.ErrorMessage).ToList();
 
             throw new ErrorOnValidationException(errorMessages);
         }

@@ -1,9 +1,8 @@
-using CashFlow.Domain.Entities;
-using CashFlow.Domain.Repositories.Users;
+﻿using CashFlow.Domain.Entities;
+using CashFlow.Domain.Repositories.User;
 using Moq;
 
 namespace CommonTestUtilities.Repositories;
-
 public class UserReadOnlyRepositoryBuilder
 {
     private readonly Mock<IUserReadOnlyRepository> _repository;
@@ -15,7 +14,7 @@ public class UserReadOnlyRepositoryBuilder
 
     public void ExistActiveUserWithEmail(string email)
     {
-        _repository.Setup(userReadonly => userReadonly.ExistActiveUserWithEmail(email)).ReturnsAsync(true);
+        _repository.Setup(userReadOnly => userReadOnly.ExistActiveUserWithEmail(email)).ReturnsAsync(true);
     }
 
     public UserReadOnlyRepositoryBuilder GetUserByEmail(User user)

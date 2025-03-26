@@ -1,10 +1,8 @@
-using System;
-using CashFlow.Domain.Entities;
+﻿using CashFlow.Domain.Entities;
 using CashFlow.Domain.Security.Tokens;
 using Moq;
 
 namespace CommonTestUtilities.Token;
-
 public class JwtTokenGeneratorBuilder
 {
     public static IAccessTokenGenerator Build()

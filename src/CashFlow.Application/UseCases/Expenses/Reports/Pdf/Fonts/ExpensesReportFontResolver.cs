@@ -2,7 +2,6 @@
 using System.Reflection;
 
 namespace CashFlow.Application.UseCases.Expenses.Reports.Pdf.Fonts;
-
 public class ExpensesReportFontResolver : IFontResolver
 {
     public byte[]? GetFont(string faceName)

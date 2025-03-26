@@ -1,7 +1,6 @@
 ﻿using MigraDoc.DocumentObjectModel;
 
 namespace CashFlow.Application.UseCases.Expenses.Reports.Pdf.Colors;
-
 public static class ColorsHelper
 {
     public static readonly Color RED_DARK = Color.Parse("#DF340C");

@@ -1,5 +1,4 @@
-namespace CashFlow.Communication.Requests;
-
+﻿namespace CashFlow.Communication.Requests;
 public class RequestLoginJson
 {
     public string Email { get; set; } = string.Empty;

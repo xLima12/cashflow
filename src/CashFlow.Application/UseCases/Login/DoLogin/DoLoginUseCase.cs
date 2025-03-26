@@ -1,45 +1,44 @@
-using CashFlow.Communication.Requests;
+﻿using CashFlow.Communication.Requests;
 using CashFlow.Communication.Responses;
-using CashFlow.Domain.Repositories.Users;
+using CashFlow.Domain.Repositories.User;
 using CashFlow.Domain.Security.Cryptography;
 using CashFlow.Domain.Security.Tokens;
-using CashFlow.Exception.ExceptionBase;
+using CashFlow.Exception.ExceptionsBase;
 
 namespace CashFlow.Application.UseCases.Login.DoLogin;
-
 public class DoLoginUseCase : IDoLoginUseCase
 {
     private readonly IUserReadOnlyRepository _repository;
-    private readonly IPasswordEncrypter _passwordEncrypter;
+    private readonly IPasswordEncripter _passwordEncripter;
     private readonly IAccessTokenGenerator _accessTokenGenerator;
+
     public DoLoginUseCase(
         IUserReadOnlyRepository repository,
-        IPasswordEncrypter passwordEncripter,
-        IAccessTokenGenerator accessTokenGenerator
-    )
+        IPasswordEncripter passwordEncripter,
+        IAccessTokenGenerator accessTokenGenerator)
     {
+        _passwordEncripter = passwordEncripter;
         _repository = repository;
-        _passwordEncrypter = passwordEncripter;
         _accessTokenGenerator = accessTokenGenerator;
     }
 
-    public async Task<ResponseRegisterUserJson> Execute(RequestLoginJson request)
+    public async Task<ResponseRegisteredUserJson> Execute(RequestLoginJson request)
     {
         var user = await _repository.GetUserByEmail(request.Email);
 
-        if(user is null)
-        {
+        if (user is null)
+        { 
             throw new InvalidLoginException();
         }
 
-        var passwordMatch = _passwordEncrypter.Verify(request.Password, user.Password);
+        var passwordMatch = _passwordEncripter.Verify(request.Password, user.Password);
 
         if(passwordMatch == false)
         {
             throw new InvalidLoginException();
         }
 
-        return new ResponseRegisterUserJson
+        return new ResponseRegisteredUserJson
         {
             Name = user.Name,
             Token = _accessTokenGenerator.Generate(user)

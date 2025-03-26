@@ -1,8 +1,7 @@
-using Bogus;
+﻿using Bogus;
 using CashFlow.Communication.Requests;
 
 namespace CommonTestUtilities.Requests;
-
 public class RequestLoginJsonBuilder
 {
     public static RequestLoginJson Build()

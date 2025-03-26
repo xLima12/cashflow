@@ -4,10 +4,9 @@ using CashFlow.Domain.Repositories.Expenses;
 using ClosedXML.Excel;
 
 namespace CashFlow.Application.UseCases.Expenses.Reports.Excel;
-
 public class GenerateExpensesReportExcelUseCase : IGenerateExpensesReportExcelUseCase
 {
-    private const string CURRENCY_SYMBOL = "R$";
+    private const string CURRENCY_SYMBOL = "€";
     private readonly IExpensesReadOnlyRepository _repository;
 
     public GenerateExpensesReportExcelUseCase(IExpensesReadOnlyRepository repository)
@@ -23,36 +22,35 @@ public class GenerateExpensesReportExcelUseCase : IGenerateExpensesReportExcelUs
             return [];
         }
 
-        using var worbook = new XLWorkbook();
+        using var workbook = new XLWorkbook();
 
-        worbook.Author = "Felipe Lima";
-        worbook.Style.Font.FontSize = 12;
-        worbook.Style.Font.FontName = "Calibri Ligth";
+        workbook.Author = "Welisson Arley";
+        workbook.Style.Font.FontSize = 12;
+        workbook.Style.Font.FontName = "Times New Roman";
 
-        var worksheet = worbook.Worksheets.Add(month.ToString("Y"));
+        var worksheet = workbook.Worksheets.Add(month.ToString("Y"));
 
         InsertHeader(worksheet);
 
-        var row = 2;
-
-        foreach (var expense in expenses)
+        var raw = 2;
+        foreach(var expense in expenses)
         {
-            worksheet.Cell($"A{row}").Value = expense.Title;
-            worksheet.Cell($"B{row}").Value = expense.Date;
-            worksheet.Cell($"C{row}").Value = expense.PaymentType.PaymentTypeToString();
+            worksheet.Cell($"A{raw}").Value = expense.Title;
+            worksheet.Cell($"B{raw}").Value = expense.Date;
+            worksheet.Cell($"C{raw}").Value = expense.PaymentType.PaymentTypeToString();
+            
+            worksheet.Cell($"D{raw}").Value = expense.Amount;
+            worksheet.Cell($"D{raw}").Style.NumberFormat.Format = $"-{CURRENCY_SYMBOL} #,##0.00";
+            
+            worksheet.Cell($"E{raw}").Value = expense.Description;
 
-            worksheet.Cell($"D{row}").Value = expense.Amount;
-            worksheet.Cell($"D{row}").Style.NumberFormat.Format = $"-{CURRENCY_SYMBOL} #,##0.00";
-
-            worksheet.Cell($"E{row}").Value = expense.Description;
-
-            row++;
+            raw++;
         }
 
         worksheet.Columns().AdjustToContents();
 
         var file = new MemoryStream();
-        worbook.SaveAs(file);
+        workbook.SaveAs(file);
 
         return file.ToArray();
     }
@@ -72,7 +70,7 @@ public class GenerateExpensesReportExcelUseCase : IGenerateExpensesReportExcelUs
         worksheet.Cell("A1").Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
         worksheet.Cell("B1").Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
         worksheet.Cell("C1").Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
-        worksheet.Cell("D1").Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Right);
         worksheet.Cell("E1").Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Center);
+        worksheet.Cell("D1").Style.Alignment.SetHorizontal(XLAlignmentHorizontalValues.Right);
     }
 }
